@@ -4,15 +4,14 @@ require('dotenv').config();
 
 const app = express();
 
-// app.use(cors({
-//   origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-//   credentials: true,
-// }));
-
 const allowedOrigins = [
   "https://voucher-zeta.vercel.app",
   "http://localhost:3000"
 ];
+
+if (process.env.FRONTEND_URL) {
+  allowedOrigins.push(process.env.FRONTEND_URL);
+}
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -30,19 +29,13 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api', require('./routes'));
 
-app.get('/health', (req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
+app.get('/health', (req, res) =>
+  res.json({ status: 'ok', timestamp: new Date().toISOString() })
+);
 
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Something went wrong' });
+  console.error("🔥 ERROR:", err);
+  res.status(500).json({ error: err.message });
 });
 
-// const PORT = process.env.PORT || 5000;
-// app.listen(PORT, () => {
-//   console.log(`🚀 Server running on port ${PORT}`);
-
-//   // Start cron scheduler after server is up
-//   const { initCronScheduler } = require('./jobs/scheduler');
-//   initCronScheduler();
-// });
 module.exports = app;
