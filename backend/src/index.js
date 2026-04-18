@@ -8,7 +8,6 @@ const app = express();
 //   origin: process.env.FRONTEND_URL || 'http://localhost:3000',
 //   credentials: true,
 // }));
-// import cors from "cors";
 
 const allowedOrigins = [
   "https://voucher-zeta.vercel.app",
