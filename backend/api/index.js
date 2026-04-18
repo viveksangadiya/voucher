@@ -1,2 +1,2 @@
-const app = require("../src/index"); // your main file
+const app = require("./backend/src/index");
 module.exports = app;
