@@ -1,0 +1,12 @@
+{
+  "name": "vouchermarket",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install:all": "cd backend && npm install && cd ../frontend && npm install",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "migrate": "cd backend && npm run migrate",
+    "setup": "npm run install:all && npm run migrate"
+  }
+}
