@@ -11,7 +11,16 @@ const pool = new Pool({
     rejectUnauthorized: false
   }
 });
-await pool.query('SET search_path TO public');
+// ✅ fix here
+(async () => {
+  try {
+    await pool.query('SET search_path TO public');
+    console.log("✅ Schema set to public");
+  } catch (err) {
+    console.error("❌ Error setting schema:", err);
+  }
+})();
+
 pool.on('connect', () => {
   if (process.env.NODE_ENV !== 'test') {
     console.log('📦 Connected to PostgreSQL');
