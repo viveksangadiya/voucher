@@ -8,15 +8,24 @@ const app = express();
 //   origin: process.env.FRONTEND_URL || 'http://localhost:3000',
 //   credentials: true,
 // }));
-import cors from "cors";
+// import cors from "cors";
+
+const allowedOrigins = [
+  "https://voucher-zeta.vercel.app",
+  "http://localhost:3000"
+];
 
 app.use(cors({
-  origin: [
-    "https://voucher-zeta.vercel.app", // your frontend
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("CORS not allowed"));
+    }
+  },
   credentials: true
 }));
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
@@ -29,11 +38,12 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Something went wrong' });
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+// const PORT = process.env.PORT || 5000;
+// app.listen(PORT, () => {
+//   console.log(`🚀 Server running on port ${PORT}`);
 
-  // Start cron scheduler after server is up
-  const { initCronScheduler } = require('./jobs/scheduler');
-  initCronScheduler();
-});
+//   // Start cron scheduler after server is up
+//   const { initCronScheduler } = require('./jobs/scheduler');
+//   initCronScheduler();
+// });
+module.exports = app;
