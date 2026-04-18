@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState, useCallback } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import api from '@/lib/api';
 import VoucherCard from '@/components/ui/VoucherCard';
 import { Search, SlidersHorizontal, X } from 'lucide-react';
@@ -14,8 +14,11 @@ const SORTS = [
   { value: 'popular', label: 'Most Viewed' },
 ];
 
-export default function VouchersPage() {
-  const searchParams = useSearchParams();
+export default function VouchersPage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
   const router = useRouter();
   const [vouchers, setVouchers] = useState([]);
   const [categories, setCategories] = useState<any[]>([]);
@@ -24,12 +27,17 @@ export default function VouchersPage() {
   const [loading, setLoading] = useState(true);
   const [showFilters, setShowFilters] = useState(false);
 
+  const getParam = (key: string) => {
+    const val = searchParams[key];
+    return typeof val === 'string' ? val : '';
+  };
+  
   const [filters, setFilters] = useState({
-    search: searchParams.get('search') || '',
-    category: searchParams.get('category') || '',
-    sort: searchParams.get('sort') || 'newest',
-    minPrice: searchParams.get('minPrice') || '',
-    maxPrice: searchParams.get('maxPrice') || '',
+    search: getParam('search'),
+    category: getParam('category'),
+    sort: getParam('sort') || 'newest',
+    minPrice: getParam('minPrice'),
+    maxPrice: getParam('maxPrice'),
     page: 1,
   });
 

@@ -208,7 +208,11 @@ export default function ProfilePage() {
           ) : (
             <div className="flex items-center gap-2 mb-1">
               <h1 className="font-display text-2xl font-700 text-white">{profile.name}</h1>
-              {profile.is_verified && <Shield className="w-5 h-5 text-primary-400 shrink-0" title="Verified" />}
+              {profile.is_verified && (
+                  <span title="Verified">
+                    <Shield className="w-5 h-5 text-primary-400 shrink-0" />
+                  </span>
+                )}
             </div>
           )}
 

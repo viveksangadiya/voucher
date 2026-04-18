@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import api from '@/lib/api';
 import { useAuthStore } from '@/store/authStore';
 import toast from 'react-hot-toast';
@@ -19,11 +19,10 @@ const TABS = [
   { id: 'wallet', label: 'Wallet', icon: Wallet },
 ];
 
-export default function DashboardPage() {
+export default function DashboardPage({ searchParams }: { searchParams: { tab?: string } }) {
   const { user, refreshUser, isHydrated } = useAuthStore();
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const [tab, setTab] = useState(searchParams.get('tab') || 'overview');
+  const [tab, setTab] = useState(searchParams?.tab || 'overview');
   const [stats, setStats] = useState<any>(null);
   const [listings, setListings] = useState<any[]>([]);
   const [purchases, setPurchases] = useState<any[]>([]);
